@@ -27,11 +27,11 @@ const buildUtils = require('./build-utils');
  * See: https://webpack.js.org/configuration/
  */
 module.exports = function (options) {
-  const isProd = options.env === 'production';
+  const isProd = options.env === 'production' || options.env === 'prod';
   const sourceMap = !isProd;
   const APP_CONFIG = require(process.env.ANGULAR_CONF_FILE || (isProd ? './config.prod.json' : './config.dev.json'));
 
-  const METADATA = Object.assign({}, buildUtils.DEFAULT_METADATA,options.metadata || {});
+  const METADATA = Object.assign({}, buildUtils.DEFAULT_METADATA, options.metadata || {});
   const GTM_API_KEY = process.env.GTM_API_KEY || APP_CONFIG.gtmKey;
 
   const ngcWebpackConfig = buildUtils.ngcWebpackSetup(isProd, METADATA);

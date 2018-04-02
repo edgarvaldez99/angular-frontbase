@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>contextName</artifactId>
+  <groupId>py.com.fielco</groupId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <properties>
+    <node.version>v8.9.4</node.version>
+    <yarn.version>v1.5.1</yarn.version>
+    <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
+    <environment>prod</environment>
+  </properties>
+  <build>
+    <finalName>${project.artifactId}##${project.version}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <webXml>web.xml</webXml>
+          <webResources>
+            <resource>
+              <!-- this is relative to the pom.xml directory -->
+              <directory>dist</directory>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <update>true</update>
+          <path>/${project.name}##${project.version}</path>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>${frontend-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>install node and yarn</id>
+            <goals>
+              <goal>install-node-and-yarn</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+          <execution>
+            <id>yarn set-proxy</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>set-proxy</phase>
+            <configuration>
+              <arguments>set-proxy</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>yarn install</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <arguments>install</arguments>
+              <yarnInheritsProxyConfigFromMaven>true</yarnInheritsProxyConfigFromMaven>
+            </configuration>
+          </execution>
+          <execution>
+            <id>yarn rebuild-sass</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>rebuild-sass</phase>
+            <configuration>
+              <arguments>rebuild-sass</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>ng build</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run build-${environment}</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>ng clean</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>clean</phase>
+            <configuration>
+              <arguments>run clean</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>ng-build-doc</id>
+            <goals>
+              <goal>yarn</goal>
+            </goals>
+            <phase>verify</phase>
+            <configuration>
+              <arguments>run docs</arguments>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <nodeVersion>${node.version}</nodeVersion>
+          <yarnVersion>${yarn.version}</yarnVersion>
+          <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

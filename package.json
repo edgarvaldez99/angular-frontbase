@@ -12,8 +12,8 @@
     "tipe",
     "tipe.io"
   ],
-  "author": "Patrick Stapleton <patrick@tipe.io>",
-  "homepage": "https://github.com/gdi2290/angular-starter",
+  "author": "Edgar Valdez <edgarvaldez99@gmail.com>",
+  "homepage": "https://github.com/edgarvaldez99/angular-frontbase",
   "license": "MIT",
   "scripts": {
     "build:aot:prod": "npm run clean:dist && npm run clean:aot && cross-env BUILD_AOT=1 npm run webpack -- --config config/webpack.prod.js  --progress --profile --bail",
@@ -82,7 +82,12 @@
     "webdriver:start": "node ./node_modules/protractor/bin/webdriver-manager start",
     "webdriver:update": "node ./node_modules/protractor/bin/webdriver-manager update",
     "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js",
+    "set-proxy": "npm config set proxy http://192.168.35.45:3128 && npm config set https-proxy http://192.168.35.45:3128",
+    "rebuild-sass": "npm rebuild node-sass --force",
+    "build-prod": "yarn install && npm run build:prod",
+    "build-dev": "yarn install && npm run build:dev",
+    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet"
   },
   "dependencies": {
     "@angular/animations": "^5.2.7",

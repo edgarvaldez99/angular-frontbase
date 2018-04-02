@@ -23,7 +23,7 @@ const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
 const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-
+const APP_PROD_CONFIG = require('./config.prod.json');
 
 function getUglifyOptions (supportES2015) {
   const uglifyCompressOptions = {
@@ -49,7 +49,7 @@ function getUglifyOptions (supportES2015) {
 module.exports = function (env) {
   const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
   const supportES2015 = buildUtils.supportES2015(buildUtils.DEFAULT_METADATA.tsConfigPath);
-  const METADATA = Object.assign({}, buildUtils.DEFAULT_METADATA, {
+  const METADATA = Object.assign({}, buildUtils.DEFAULT_METADATA, APP_PROD_CONFIG.metadata, {
     host: process.env.HOST || 'localhost',
     port: process.env.PORT || 8080,
     ENV: ENV,
